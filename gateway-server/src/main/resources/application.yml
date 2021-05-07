@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: gateway-server #应用名称
+  cloud:
+    gateway:
+#      routes:  # 静态路由规则
+#        - id: product-service
+##          uri: http://localhost:7070/  #静态路由
+#          uri: lb://product-service    # 动态路由，lb://根据服务名称从注册中心获取服务请求地址
+#          predicates:
+#             - Path=/product/**   # 按照路径路由
+##            - Query=token  # 按照请求参数路由(支持正则表达式)
+##            - Method=GET  # 匹配任意GET请求
+##            - After=2020-02-02T20:20:20.000+08:00[Asia/Shanghai] #匹配上海时间2020-02-02 20:20:20 之后的请求
+##            - Header=x-qh-id,\d+ #匹配请求头包含x-qh-id 并且其值匹配正则表达式\d+的请求
+
+
+
+#        discovery:   #动态路由按照服务名称转发
+#          locator:
+#            # 是否与服务发现组件进行结合，通过servicrId转发到具体实例
+#            enabled: true   # 是否开启基于服务发现的路由规则
+#            lower-case-service-id: true # 是否将服务名称转小写
+
+
+
+#      routes:  # 网关过滤器
+#        - id: product-service
+#          uri: lb://product-service    # 动态路由，lb://根据服务名称从注册中心获取服务请求地址
+#          predicates:
+#             - Path=/product/**,/api-gateway/**   # 按照路径路由
+#          filters:
+#             # 将/api-gateway/product/1重写为/product/1
+#             - RewritePath=/api-gateway(?<segment>/?.*),$\{segment}
+#             # 在下游请求中参数添加flag=1
+#             - AddRequestParameter=flag,1
+#             # 任何情况下响应的HTTP状态都设置为404
+#             - SetStatus=404
+
+
+#端口
+server:
+  port: 9000
+
+
+#动态路由就是面向服务的路由，spring cloud  gateway支持与eureka整合开发，自动从注册中心获取地址并转发请求，这样的好处是可以负载均衡，并且在添加或者移除服务实例时不用修改gateway的路由配置
+#配置Eureka注册中心
+eureka:
+  instance:
+    prefer-ip-address:  true  # 是否使用ip地址注册
+    instance-id:  ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    #设置服务注册中心地址
+    service-url:
+      defaultZone:  http://localhost:8761/eureka/,http://localhost:8762/eureka/

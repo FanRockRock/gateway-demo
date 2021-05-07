@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: order-service #应用名称
+
+#端口
+server:
+  port: 9090
+
+# 配置Eureka Server 注册中心
+eureka:
+  instance:
+    prefer-ip-address:  true  # 是否使用ip地址注册
+    instance-id:  ${spring.cloud.client.ip-address}:${server.port}
+  client:
+    #设置服务注册中心地址
+    service-url:
+      defaultZone:  http://localhost:8761/eureka/,http://localhost:8762/eureka/
+
+
